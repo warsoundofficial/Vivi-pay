@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>VIVI PAY - OTP</title>
+<style>
+*{box-sizing:border-box}
+body{
+  margin:0;background:#f5f7fb;
+  font-family:Arial,sans-serif;color:#172033;
+}
+.top{
+  background:linear-gradient(120deg,#1246a0,#3989f6);
+  color:white;padding:24px;text-align:center;
+}
+.logo{font-size:30px;font-weight:bold;letter-spacing:2px}
+.wrap{max-width:430px;margin:55px auto;padding:18px}
+.card{
+  background:white;border-radius:15px;padding:28px 20px;
+  box-shadow:0 5px 25px #00000010;text-align:center;
+}
+h2{font-size:25px;font-weight:500;margin:14px 0}
+.sub{color:#87909f;font-size:14px;margin:16px 0 35px}
+.boxes{display:flex;justify-content:center;gap:12px}
+.boxes input{
+  width:55px;height:58px;border:1px solid #d5dce7;
+  border-radius:8px;text-align:center;font-size:25px;
+}
+.boxes input:focus{outline:2px solid #3788f5}
+button{
+  width:100%;margin-top:25px;padding:14px;border:0;
+  border-radius:8px;background:#2785ed;color:white;font-size:17px;
+}
+#message{min-height:22px;font-size:14px;margin-top:15px;color:#d22}
+.note{font-size:12px;color:#7c8798;line-height:1.6;margin-top:24px}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="logo">VIVI PAY</div>
+  <div style="margin-top:8px">Secure • Fast • Reliable</div>
+</header>
+
+<div class="wrap">
+  <div class="card">
+    <h2>Please enter OTP</h2>
+    <div class="sub">Enter the 4-digit demo code provided for this test.</div>
+
+    <div class="boxes">
+      <input inputmode="numeric" maxlength="1" aria-label="Digit 1">
+      <input inputmode="numeric" maxlength="1" aria-label="Digit 2">
+      <input inputmode="numeric" maxlength="1" aria-label="Digit 3">
+      <input inputmode="numeric" maxlength="1" aria-label="Digit 4">
+    </div>
+
+    <button id="verify">Verify OTP</button>
+    <div id="message" role="status"></div>
+    <div class="note">
+      College project demo only. Use fictional test codes;
+      this page does not send or collect real OTPs.
+    </div>
+  </div>
+</div>
+
+<script>
+const boxes = [...document.querySelectorAll(".boxes input")];
+
+boxes.forEach((box, i) => {
+  box.addEventListener("input", () => {
+    box.value = box.value.replace(/\D/g, "").slice(-1);
+    if (box.value && boxes[i + 1]) boxes[i + 1].focus();
+  });
+
+  box.addEventListener("keydown", e => {
+    if (e.key === "Backspace" && !box.value && boxes[i - 1]) {
+      boxes[i - 1].focus();
+    }
+  });
+});
+
+document.getElementById("verify").addEventListener("click", () => {
+  const entered = boxes.map(b => b.value).join("");
+  const message = document.getElementById("message");
+
+  // Fixed fictional demo code; never use as real authentication.
+  if (entered === "1234") {
+    message.style.color = "#168044";
+    message.textContent = "Demo verification successful!";
+  } else {
+    message.style.color = "#d22";
+    message.textContent = "Wrong OTP. Please try again.";
+    boxes.forEach(b => b.value = "");
+    boxes[0].focus();
+  }
+});
+</script>
+</body>
+</html>
